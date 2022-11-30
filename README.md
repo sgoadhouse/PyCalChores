@@ -19,3 +19,5 @@ for example:
 > python MakeCal.py 2020 5 params.yaml MonthMay.pdf
 
 > python MakeCal.py 2020 params.yaml Year2020.pdf
+
+> python MakeCal.py 2023 7 SampleYamlFiles/MonthBoxedLandsChores.yaml cal_jul.pdf 
