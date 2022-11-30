@@ -1,6 +1,8 @@
 # PyCal
 
-A very simple Python PDF Calendar program.  Instead of using someone elses program, I thought about making one myself.
+A very simple Python PDF Calendar program forked from https://github.com/adc-code/PyCal.
+
+I modified it to add a recurring chore schedule to the day boxes.
 
 ## Usage
 
