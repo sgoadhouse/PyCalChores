@@ -186,10 +186,10 @@ def MakePDFMonthCal (year, month, calParams, outputFile):
 
                         pdfFile.set_xy (calParams['PageXOrigin'] + calXOffset, (calParams['PageYOrigin'] + calYOffset)+0.45)
                         pdfFile.set_font (calParams['Font'], style='i', size=INCH_TO_POINT*calParams['BlockMonthTitleHeight']/2.5*calHeight) 
-                        pdfFile.cell (calWidth, \
-                                      calParams['BlockMonthTitleHeight']/2.5*calHeight, \
-                                      txt='(if you miss your chore, you do both the next day)', \
-                                      border=calParams['Debug'], align='C')
+                        #@@@#pdfFile.cell (calWidth, \
+                        #@@@#              calParams['BlockMonthTitleHeight']/2.5*calHeight, \
+                        #@@@#              txt='(if you miss your chore, you do both the next day)', \
+                        #@@@#              border=calParams['Debug'], align='C')
                         
 
 
@@ -395,6 +395,7 @@ def MakePDFMonthCal (year, month, calParams, outputFile):
                                         if calParams['Debug']:
                                                 print(f'Day    numberLoc: {numberXLoc:.3f}, {numberYLoc:.3f}')
                                                 
+                                        pdfFile.set_text_color (calParams['FontColourR'], calParams['FontColourG'], calParams['FontColourB'])
                                         pdfFile.set_xy (numberXLoc, numberYLoc)
                                         pdfFile.set_font (calParams['Font'], style=fontStyle, size=fontScaleFactor*calParams['BlockDayRegionHeight'] * calHeight / GRID_ROWS)
                                         pdfFile.cell (fontMaxWidth, fontMaxSize / INCH_TO_POINT, txt=str(i), align='L', border=calParams['Debug'])
@@ -406,10 +407,13 @@ def MakePDFMonthCal (year, month, calParams, outputFile):
                                         # Determine who has what chore using a modulo of the days since epoch
                                         daysSinceEpoch = (datetime.datetime(year, calMonth, i) - datetime.datetime(1970,1,1)).days
                                         people = ['S', 'U', 'Z']
-                                        person=daysSinceEpoch % len(people)
-                                        dishes = people[person]
+                                        person = daysSinceEpoch % len(people)
+                                        dishes = people[person]                                        
                                         trash = people[(person+2) % len(people)]
-                                        
+
+                                        dishesColor = (calParams['Chore'+dishes+'FontColourR'], calParams['Chore'+dishes+'FontColourG'], calParams['Chore'+dishes+'FontColourB'])
+                                        trashColor = (calParams['Chore'+trash+'FontColourR'], calParams['Chore'+trash+'FontColourG'], calParams['Chore'+trash+'FontColourB'])
+
                                         chorefontStyle = ''
                                         if (calParams['ChoreFontBold'] == True):
                                                 chorefontStyle += 'b'
@@ -431,6 +435,7 @@ def MakePDFMonthCal (year, month, calParams, outputFile):
 
                                         pdfFile.set_font (calParams['ChoreFont'], style=chorefontStyle, size=chorefontScaleFactor*calParams['BlockDayRegionHeight'] * calHeight / GRID_ROWS)
                                         pdfFile.set_xy (numberXLoc, numberYLoc)
+                                        pdfFile.set_text_color (*dishesColor)
                                         pdfFile.cell (chorefontMaxWidth, chorefontMaxSize / INCH_TO_POINT, txt=dishes, align='L', border=calParams['Debug'])
 
                                         numberXLoc += 0.25
@@ -447,6 +452,7 @@ def MakePDFMonthCal (year, month, calParams, outputFile):
                                                 print(f'TrashP numberLoc: {numberXLoc:.3f}, {numberYLoc:.3f}')
 
                                         pdfFile.set_xy (numberXLoc, numberYLoc)
+                                        pdfFile.set_text_color (*trashColor)
                                         pdfFile.cell (chorefontMaxWidth, chorefontMaxSize / INCH_TO_POINT, txt=trash, align='L', border=calParams['Debug'])
 
                                         numberXLoc += 0.25
