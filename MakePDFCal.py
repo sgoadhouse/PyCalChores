@@ -460,8 +460,12 @@ def MakePDFMonthCal (year, month, calParams, outputFile):
                                         if calParams['Debug']:
                                                 print(f'Trash  numberLoc: {numberXLoc:.3f}, {numberYLoc:.3f}')
 
-                                        pdfFile.set_xy (numberXLoc, numberYLoc)
-                                        pdfFile.cell (chorefontMaxWidth, chorefontMaxSize / INCH_TO_POINT, txt='Trash', align='L', border=calParams['Debug'])
+                                        pdfFile.set_font (calParams['ChoreFont'], style=chorefontStyle, size=chorefontScaleFactor*calParams['BlockDayRegionHeight'] * calHeight / GRID_ROWS / 1.5)
+                                                
+                                        pdfFile.set_xy (numberXLoc, numberYLoc-0.07)
+                                        pdfFile.cell (chorefontMaxWidth, chorefontMaxSize / INCH_TO_POINT, txt='Trash &', align='L', border=calParams['Debug'])
+                                        pdfFile.set_xy (numberXLoc, numberYLoc+0.07)
+                                        pdfFile.cell (chorefontMaxWidth, chorefontMaxSize / INCH_TO_POINT, txt='Cat Box', align='L', border=calParams['Debug'])
                                         
                         col += 1
                         if (col % 7 == 0):
