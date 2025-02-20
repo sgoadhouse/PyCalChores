@@ -404,12 +404,37 @@ def MakePDFMonthCal (year, month, calParams, outputFile):
                                         # Add the Chore Text
                                         #
 
-                                        # Determine who has what chore using a modulo of the days since epoch
-                                        daysSinceEpoch = (datetime.datetime(year, calMonth, i) - datetime.datetime(1970,1,1)).days
                                         people = ['S', 'U', 'Z']
-                                        person = daysSinceEpoch % len(people)
-                                        dishes = people[person]                                        
-                                        trash = people[(person+2) % len(people)]
+                                        daysSinceEpoch = (datetime.datetime(year, calMonth, i) - datetime.datetime(1970,1,1)).days
+                                        if calParams['ChoreMethod'] == 'DayoftheWeek':
+                                                # Determine who has what chore using a prescribed assignment and day of the week
+                                                # Mon = 0, Sun = 6
+                                                DotW = datetime.datetime(year, calMonth, i).weekday()
+                                                # isocalendar() may count weeks different than expected. Monday is the start of the week and
+                                                # how week 1 is determined may be different than expected. Regardless, since using a modulo, it does not matter.
+                                                # Ultimately, DotBiW is a number 0 to 13
+                                                #
+                                                # @@@ After doing this, forgot that we have a weekly schedule, so NEVERMIND
+                                                #@@@#DotBiW = DotW + (datetime.datetime(year, calMonth, i).isocalendar().week % 2) * 7
+
+                                                weeksSinceEpoch = daysSinceEpoch // 7
+                                                personRotate0 = weeksSinceEpoch % len(people)
+                                                personRotate1 = (personRotate0 + 1) % len(people)
+
+                                                #               M    Tu   W    Th   F   Sa                      Su
+                                                dishesArray = ['U', 'S', 'Z', 'U', 'S', people[personRotate0], 'Z']
+                                                trashArray  = ['Z', 'S', 'U', 'U', 'Z', people[personRotate1], 'S']
+                                                dishes = dishesArray[DotW]
+                                                trash = trashArray[DotW]
+                                        else:
+                                                # ChoreMethod Modulo is the default
+                                                if calParams['ChoreMethod'] != 'Modulo':
+                                                        print(f"UNKNWOWN ChoreMethod: {calParams['ChoreMethod']} so defaulting to Modulo")
+                                                        
+                                                # Determine who has what chore using a modulo of the days since epoch
+                                                person = daysSinceEpoch % len(people)
+                                                dishes = people[person]                                        
+                                                trash = people[(person+2) % len(people)]
 
                                         dishesColor = (calParams['Chore'+dishes+'FontColourR'], calParams['Chore'+dishes+'FontColourG'], calParams['Chore'+dishes+'FontColourB'])
                                         trashColor = (calParams['Chore'+trash+'FontColourR'], calParams['Chore'+trash+'FontColourG'], calParams['Chore'+trash+'FontColourB'])

@@ -22,6 +22,12 @@ FontColourR: 0
 FontColourG: 0
 FontColourB: 0
 
+# Pick one of the calendar methods
+# Modulo rotates chores every 3 days
+#@@@#ChoreMethod: Modulo
+# DayoftheWeek follows a prescribed assignment base don Day of the Week
+ChoreMethod: DayoftheWeek
+#
 ChoreFont: Chalkboard
 ChoreFontBold: False
 ChoreFontItalic: False
