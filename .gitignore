@@ -3,4 +3,6 @@
 *~
 .DS_Store
 __pycache__/
+# Python virtual environment folder for running on MacBook 13
+python3-venv/
 
