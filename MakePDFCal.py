@@ -404,7 +404,8 @@ def MakePDFMonthCal (year, month, calParams, outputFile):
                                         # Add the Chore Text
                                         #
 
-                                        people = ['S', 'U', 'Z']
+                                        #@@@#people = ['S', 'U', 'Z']
+                                        people = ['S', 'U']
                                         daysSinceEpoch = (datetime.datetime(year, calMonth, i) - datetime.datetime(1970,1,1)).days
                                         if calParams['ChoreMethod'] == 'DayoftheWeek':
                                                 # Determine who has what chore using a prescribed assignment and day of the week
@@ -422,8 +423,11 @@ def MakePDFMonthCal (year, month, calParams, outputFile):
                                                 personRotate1 = (personRotate0 + 1) % len(people)
 
                                                 #               M    Tu   W    Th   F   Sa                      Su
-                                                dishesArray = ['U', 'S', 'Z', 'U', 'S', people[personRotate0], 'Z']
-                                                trashArray  = ['Z', 'S', 'U', 'U', 'Z', people[personRotate1], 'S']
+                                                #@@@#dishesArray = ['U', 'S', 'Z', 'U', 'S', people[personRotate0], 'Z']
+                                                #@@@#trashArray  = ['Z', 'S', 'U', 'U', 'Z', people[personRotate1], 'S']
+                                                #               M    Tu   W    Th   F   Sa                      Su
+                                                dishesArray = ['U', 'S', 'U', 'S', 'S', people[personRotate0], 'U']
+                                                trashArray  = ['S', 'U', 'S', 'U', 'U', people[personRotate1], 'S']
                                                 dishes = dishesArray[DotW]
                                                 trash = trashArray[DotW]
                                         else:
@@ -483,14 +487,16 @@ def MakePDFMonthCal (year, month, calParams, outputFile):
                                         numberXLoc += 0.25
                                         numberYLoc += 0
                                         if calParams['Debug']:
-                                                print(f'Trash  numberLoc: {numberXLoc:.3f}, {numberYLoc:.3f}')
+                                                print(f'Trash  numberLoc: {numberXLoc:.3f}, {numberYLoc:.3f}')                                      
 
-                                        pdfFile.set_font (calParams['ChoreFont'], style=chorefontStyle, size=chorefontScaleFactor*calParams['BlockDayRegionHeight'] * calHeight / GRID_ROWS / 1.5)
-                                                
-                                        pdfFile.set_xy (numberXLoc, numberYLoc-0.07)
-                                        pdfFile.cell (chorefontMaxWidth, chorefontMaxSize / INCH_TO_POINT, txt='Trash &', align='L', border=calParams['Debug'])
-                                        pdfFile.set_xy (numberXLoc, numberYLoc+0.07)
-                                        pdfFile.cell (chorefontMaxWidth, chorefontMaxSize / INCH_TO_POINT, txt='Cat Box', align='L', border=calParams['Debug'])
+                                        pdfFile.set_xy (numberXLoc, numberYLoc)
+                                        pdfFile.cell (chorefontMaxWidth, chorefontMaxSize / INCH_TO_POINT, txt='Trash', align='L', border=calParams['Debug'])
+                                        #@@@
+                                        #pdfFile.set_font (calParams['ChoreFont'], style=chorefontStyle, size=chorefontScaleFactor*calParams['BlockDayRegionHeight'] * calHeight / GRID_ROWS / 1.5)
+                                        #pdfFile.set_xy (numberXLoc, numberYLoc-0.07)
+                                        #pdfFile.cell (chorefontMaxWidth, chorefontMaxSize / INCH_TO_POINT, txt='Trash &', align='L', border=calParams['Debug'])
+                                        #pdfFile.set_xy (numberXLoc, numberYLoc+0.07)
+                                        #pdfFile.cell (chorefontMaxWidth, chorefontMaxSize / INCH_TO_POINT, txt='Cat Box', align='L', border=calParams['Debug'])
                                         
                         col += 1
                         if (col % 7 == 0):
